@@ -1,0 +1,217 @@
+\setcounter{tocdepth}{3}  % Inhaltsverzeichnis bis Subsubsection
+\setcounter{secnumdepth}{3} % Nummerierung bis Subsubsection
+
+% General stuff
+\usepackage{fixltx2e}
+\usepackage[utf8]{inputenc} % CHANGE HERE IF NECESSARY
+\usepackage[T1]{fontenc}
+\usepackage[ngerman, english]{babel} % last language given is used (here: english)
+\usepackage{lmodern}
+%\usepackage{microtype}
+\usepackage{ifpdf}
+\usepackage{ifthen}
+
+%%%%%% MACROS %%%%%%
+\usepackage{xspace} % Nur dann ein Leerzeichen, wenn das nächste Zeichen kein Satzzeichen ist.
+\newcommand{\SecII}{Sec\textsuperscript{2}\xspace}
+\newcommand{\SAML}{\acr{SAML}\xspace}
+\newcommand{\XML}{\acr{XML}\xspace}
+
+% Set date here 
+%\day=6 \month=6 \year=2012
+
+% Set name and title
+\author{Insert your name here}
+\title{Insert title here}
+\date{\today}
+
+%%%%%% %%%%%%
+
+% Load packages ...
+
+% Corporate Design
+\usepackage{eso-pic}
+\usepackage{color}
+% Comment out if the RUB fonts are installed
+% Link: https://noc.rub.de/~jobsanzl/latex/rubtexfonts-0.4.tar.gz
+%\usepackage{rubfonts2009} 
+\newcommand{\setrubfontnormal}[1]{\fontfamily{rubscala}\fontsize{#1}{1}\selectfont}
+\newcommand{\setrubfontextra}[1]{\fontfamily{rubflama}\fontsize{#1}{1}\selectfont}
+\definecolor{rubgreen}{cmyk}{0.5,0,1,0}
+\definecolor{rubblue}{cmyk}{1,0.5,0,0.6}
+
+%Ganttchart
+\usepackage{pgfgantt}
+
+% Figures
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{placeins}
+
+% Tables
+\usepackage{booktabs}
+\usepackage{marvosym}
+\usepackage{multirow}
+
+% Math stuff and units
+\usepackage{latexsym,amsmath, amssymb, amsfonts, upgreek}
+\usepackage{siunitx}
+\newcommand{\mathup}{\mathrm}
+
+% Glossary
+\usepackage[nonumberlist, acronym, toc]{glossaries}
+\makeglossaries
+
+% Enable quotes by \enquote{}
+\usepackage[babel,english=american, german=quotes]{csquotes}
+
+% Necessary for frontpage, allows to create automata and fancy graphics
+\usepackage{tikz}
+
+% Protocols and bytefields
+\usepackage{protocol}
+\usepackage{bytefield}
+
+% Source code listings
+\newcommand{\code}[1]{\texttt{#1}}
+\definecolor{colIdentifier}{rgb}{0,0,0}
+\definecolor{colComments}{rgb}{0.5,0.5,0.5}
+\definecolor{colKeys}{rgb}{0,0,1}
+\definecolor{colString}{rgb}{0,0.6,0}
+
+\usepackage{caption}
+\usepackage{listings}
+\lstset{%
+	float=hbp,%
+	basicstyle=\ttfamily\scriptsize, %
+	identifierstyle=\color{colIdentifier}, %
+	keywordstyle=\color{colKeys}, %
+	stringstyle=\color{colString}, %
+	commentstyle=\color{colComments}, %
+	columns=flexible, %
+	tabsize=2, %
+	aboveskip={1.5\baselineskip}, %
+	frame=single, %
+	extendedchars=true, %
+	showspaces=false, %
+	showstringspaces=false, %
+	numberstyle=\tiny, %
+	breaklines=true, %
+	backgroundcolor=, %
+	breakautoindent=true, %
+	captionpos=b%
+}
+
+% Algorithms
+\usepackage[ruled, vlined, linesnumbered,algochapter,algo2e]{algorithm2e}
+
+% Format page foot and header
+\usepackage{scrpage2}
+\clearscrheadings
+\clearscrheadfoot
+\automark[section]{chapter}
+\ohead{\pagemark}
+\ihead{\headmark}
+\pagestyle{scrheadings}
+
+%% use some standards for mathematical expressions:
+\newcommand{\red}{{\rm red}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+% \newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newenvironment{example}{\begin{quote}{\bf Example:}}{\end{quote}}
+
+% BIBTEX, http://merkel.zoneo.net/Latex/natbib.php
+% if you uncomment this block, you'll get an english bibliography with alphanumerical references
+%\usepackage{bibgerm} % u. a. statt et al
+\usepackage[square,numbers]{natbib} % eckige klammern, natbib-package
+% \setbibpreamble{{\large Seitenzahlen, auf denen ein Eintrag referenziert wird, werden am Ende eines jeden Eintrags angegeben.}\newline} % Wegen der pagebackref-Option des hyperref-Packets, wird vielen nicht direkt klar was das soll http://projekte.dante.de/DanteFAQ/Verzeichnisse#16
+
+% gray definition boxes, that whay you'll find them in the text
+\usepackage{shadethm}
+\newshadetheorem{sthm}[figure]{Definition}
+\newenvironment{definition}[1][]{
+   \definecolor{shadethmcolor}{rgb}{.9,.9,.9}
+   \begin{sthm}[#1]
+ }{\end{sthm}}
+
+% experimental
+%\usepackage{scrhack}
+
+% Hyperlinks and menu for your document
+\usepackage[breaklinks,hyperindex,colorlinks,anchorcolor=black,citecolor=black,filecolor=black,linkcolor=black,menucolor=black,urlcolor=black,pdftex]{hyperref} % pagebackref: Add page number to the references where they can be found
+% DO NOT LOAD ANY OF YOUR PACKAGES BEYOND THIS PACKAGE
+
+\makeatletter
+\AtBeginDocument{
+ \hypersetup{
+   pdftitle = {\@title},
+   pdfauthor = {\@author},
+   pdfsubject={\@title},
+   pdfkeywords={SAML, add more}, % CHANGE HERE
+%    unicode={true},
+ }
+}
+\makeatother
+
+% Use the same counter for tables and figures
+\makeatletter
+\AtBeginDocument{
+\let\c@table\c@figure
+\let\c@lstlisting\c@table
+\let\c@algocf\c@lstlisting
+}
+\makeatother
+
+\ifpdf
+	\hypersetup{linktocpage=false} 	% false=links are section names, true=links are page numbers, IMPORTANT: in dvi2ps mode, 'true' is required!
+\else
+	\hypersetup{linktocpage=true} 		% false=links are section names, true=links are page numbers, IMPORTANT: in dvi2ps mode, 'true' is required!
+	\usepackage[hyphenbreaks]{breakurl}
+\fi
+
+
+%Customizing GanttChart
+\definecolor{barblue}{RGB}{153,204,254}
+\definecolor{groupblue}{RGB}{51,102,254}
+\definecolor{linkred}{RGB}{165,0,33}
+\renewcommand\sfdefault{phv}
+\renewcommand\mddefault{mc}
+\renewcommand\bfdefault{bc}
+\setganttlinklabel{s-s}{START-TO-START}
+\setganttlinklabel{f-s}{FINISH-TO-START}
+\setganttlinklabel{f-f}{FINISH-TO-FINISH}
+\sffamily
+\ganttset
+{%
+	canvas/.append style={fill=none, draw=black!35, line width=.5pt},
+	hgrid={*1{draw=black!35, line width=.1pt}},
+	hgrid style/.style={draw=black!35,line width=.1pt},
+	vgrid={*1{draw=black!35, line width=.1pt}},
+	today rule/.style={draw=black!64,dash pattern=on 3.5pt off 4.5pt,line width=1.5pt},
+	today label font=\small\bfseries,
+	title/.style={draw=none, fill=none},
+	title label font=\bfseries\footnotesize,
+	title label node/.append style={below=7pt},
+	progress label text={\pgfmathprintnumber[precision=0, verbatim]{#1}\%},
+	include title in canvas=false,
+	bar label font=\mdseries\small\color{black!70},
+	bar label node/.append style={left=0cm},
+	bar/.append style={draw=none, fill=black!63},
+	bar incomplete/.append style={fill=barblue},
+	bar progress label font=\mdseries\footnotesize\color{black!70},
+	group top shift=0.1,
+	group incomplete/.append style={fill=groupblue},
+	group left shift=0,
+	group right shift=0,
+	group height=.8,
+	group peaks tip position=0,
+	group label node/.append style={left=.6cm},
+	group progress label font=\bfseries\small,
+	link/.style={-latex, line width=1.5pt, linkred},
+	link label font=\scriptsize\bfseries,
+	link label node/.append style={below left=-2pt and 0pt}
+}

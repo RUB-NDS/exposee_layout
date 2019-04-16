@@ -1,0 +1,55 @@
+%%% TEMPLATE-INFO
+%% AUTHOR		: vladislav.mladenov@rub.de
+%% VERSION		: 0.01
+%% Please send comments and feedback (and donations ;-)) to author, thanks!
+
+%%% DOCUMENT-INFO
+%% VERSION		: 0.1
+
+\RequirePackage{fix-cm,cmap}
+
+\documentclass[
+fontsize=11pt,
+paper=a4,
+abstract=true,
+numbers=noenddot,
+listof=totoc,
+bibliography=totoc,
+open=right,
+cleardoublepage=plain,
+parskip=half+, % comment this out if you do not want an empty half line between paragraphs, but please read the KomaScript Guide and search for parskip (around page 82): ftp://ftp.dante.de/pub/tex/macros/latex/contrib/koma-script/scrguide.pdf
+BCOR=1cm, % Bindekorrektur: Change this accordingly, also read the KomaScript Guide! Make sure you read the guide.
+]{scrreprt}
+
+\input{misc/preamble}
+\input{misc/acronyms.tex}
+
+%% here your document starts
+\begin{document}
+
+%% switch to roman paginating for the acknowledgements, table of contents etc.
+\pagenumbering{roman} % uncomment this if you like it
+
+%% title page --- made out of expressions defined above
+\input{frontpage}
+
+\pagenumbering{arabic} %switches to arabic numbers for the rest of the text
+\setcounter{page}{1}
+
+
+\include{chapters/intro}
+\include{chapters/wps}
+\include{chapters/thesis_structure}
+\include{chapters/timeline}
+
+
+\pagestyle{scrplain} % turn off headers and footers
+
+\KOMAoptions{open=any} % Plaziert Kapitel auch auf linken Seiten
+
+%% generate bibliography with bibtex, the bibfile here is "paper.bib"
+\flushbottom
+\bibliographystyle{plainnat}
+\bibliography{literature/literature}
+
+\end{document} 
