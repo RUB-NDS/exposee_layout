@@ -187,6 +187,7 @@
 \sffamily
 \ganttset
 {%
+	y unit chart=0.6cm,
 	canvas/.append style={fill=none, draw=black!35, line width=.5pt},
 	hgrid={*1{draw=black!35, line width=.1pt}},
 	hgrid style/.style={draw=black!35,line width=.1pt},
@@ -203,6 +204,8 @@
 	bar/.append style={draw=none, fill=black!63},
 	bar incomplete/.append style={fill=barblue},
 	bar progress label font=\mdseries\footnotesize\color{black!70},
+	bar height=.8,
+	bar top shift=0.1,
 	group top shift=0.1,
 	group incomplete/.append style={fill=groupblue},
 	group left shift=0,
