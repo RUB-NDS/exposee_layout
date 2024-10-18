@@ -280,4 +280,4 @@ TSWLatexianTemp*
 *.aux
 *.ist
 .DS_Store
-chaptpers/*.aux
+chapters/*.aux
