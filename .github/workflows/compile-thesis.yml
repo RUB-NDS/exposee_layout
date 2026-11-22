@@ -1,12 +1,12 @@
-# This workflow will run a docker image with a full TeXLive environment installed and compile the thesis to look for errors
+# This workflow will run a docker image with a full TeXLive environment installed and compile the exposé to look for errors
 
 name: Document Build
 
 # Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
+  # Triggers the workflow on push to master or v2026 and on pull requests to master
   push:
-    branches: [ master ]
+    branches: [ master, v2026 ]
   pull_request:
     branches: [ master ]
 
@@ -20,15 +20,41 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    # Needed to create and update the release
+    permissions:
+      contents: write
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      # Compile the thesis
-      - name: Compile thesis
-        uses: xu-cheng/latex-action@v3
+      # Compile the exposé
+      - name: Compile exposé
+        uses: xu-cheng/latex-action@v4
         with:
           root_file: exposee.tex
           latexmk_shell_escape: true # necessary for minted package
-          docker_image: ghcr.io/chearix/vscode-devcontainer-latex:main
+          docker_image: ghcr.io/chearix/vscode-devcontainer-latex:2026
+
+      # Make the built PDF available for download
+      - name: Upload PDF
+        uses: actions/upload-artifact@v7
+        with:
+          name: exposee
+          path: exposee.pdf
+          if-no-files-found: error
+
+      # Keep a rolling "latest" release with the PDF
+      # Stable link: https://github.com/RUB-NDS/exposee_layout/releases/latest/download/exposee.pdf
+      - name: Update "latest" release
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          git tag -f latest
+          git push -f origin latest
+          gh release view latest > /dev/null 2>&1 || gh release create latest --title "Latest build" --notes ""
+          gh release upload latest exposee.pdf --clobber
+          gh release edit latest --notes "Built automatically from commit ${GITHUB_SHA}."
