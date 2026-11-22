@@ -1,25 +1,37 @@
-\setcounter{tocdepth}{3}  % Inhaltsverzeichnis bis Subsubsection
-\setcounter{secnumdepth}{3} % Nummerierung bis Subsubsection
+\RequirePackage{fix-cm,cmap}
+
+\documentclass[
+fontsize=11pt,
+paper=a4,
+abstract=true,
+numbers=noenddot,
+listof=totoc,
+bibliography=totoc,
+captions=tableheading,
+open=right,
+cleardoublepage=plain,
+parskip=half, % comment this out if you do not want an empty half line between paragraphs, but please read the KomaScript Guide and search for parskip (around page 82): https://mirrors.ctan.org/macros/latex/contrib/koma-script/doc/scrguide-en.pdf
+BCOR=1cm, % Bindekorrektur: Change this accordingly, also read the KomaScript Guide! Make sure you read the guide.
+]{scrreprt}
+
+\setcounter{tocdepth}{2}  % Inhaltsverzeichnis bis Subsection
+\setcounter{secnumdepth}{2} % Nummerierung bis Subsection
 
 % General stuff
 \usepackage[utf8]{inputenc} % CHANGE HERE IF NECESSARY
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel} % last language given is used (here: english. Alternative: ngerman)
 \usepackage{lmodern}
+% RUB house font (Inter) for sans serif
+\makeatletter\newcommand*{\Inter@scale}{0.9}\makeatother
+\renewcommand{\sfdefault}{Inter-LF}
 
-\usepackage{tikz} % used on frontpage
-
-%Ganttchart
-\usepackage{pgfgantt}
+\usepackage{tikz}
+\usepackage{pgfgantt} % Gantt charts
 
 
-% Set date here
-%\day=4 \month=5 \year=2023
-
-% Set name and title
-\author{Insert your name here}
-\title{Insert title here}
-\date{\today}
+% Thesis-specific values
+\input{settings}
 
 % Bibliography
 \usepackage[style=numeric,giveninits=false,natbib=true,backend=biber,maxbibnames=99,defernumbers=true,language=autobib,date=long]{biblatex}
@@ -30,18 +42,16 @@
 % Load packages ...
 
 % Corporate Design
-\usepackage{eso-pic}
 \usepackage{color}
-% Comment out if the RUB fonts are installed
-% Link: https://noc.rub.de/~jobsanzl/latex/rubtexfonts-0.4.tar.gz
-%\usepackage{rubfonts2009}
-\newcommand{\setrubfontnormal}[1]{\fontfamily{rubscala}\fontsize{#1}{1}\selectfont}
-\newcommand{\setrubfontextra}[1]{\fontfamily{rubflama}\fontsize{#1}{1}\selectfont}
 \definecolor{rubgreen}{cmyk}{0.5,0,1,0}
 \definecolor{rubblue}{cmyk}{1,0.5,0,0.6}
+% KOMA sets the title in \huge: make that 28 pt (at font scale 0.9)
+\addtokomafont{title}{\color{rubblue}\def\huge{\fontsize{31}{37}\selectfont}}
+\setkomafont{author}{\LARGE}
 
 % Figures
 \usepackage{graphicx}
+\usepackage{pdfpages} % used for the declaration of authorship
 
 % Tables
 \usepackage{booktabs}
@@ -51,12 +61,9 @@
 % Math stuff and units
 \usepackage{amsmath, amssymb, amsfonts}
 
-% Enable quotes by \enquote{}
-\usepackage[babel,english=american, german=quotes]{csquotes}
-
 \usepackage{fontawesome5}
 
-\usepackage{minted}
+\usepackage[newfloat]{minted}
 % Listings
 \setminted{
 	frame=single, % single, lines, leftline, topline, bottomline, none
@@ -83,25 +90,28 @@
 \newmintinline[html]{html}{}
 \newmintinline[json]{json}{}
 
+% Enable quotes by \enquote{}
+\usepackage[babel,english=american, german=quotes]{csquotes}
+
 % Format page foot and header
 \usepackage{scrlayer-scrpage}
-\clearscrheadings
-\clearscrheadfoot
+\clearpairofpagestyles
 \automark[section]{chapter}
 \ohead{\pagemark}
 \ihead{\headmark}
 \pagestyle{scrheadings}
 
 % Hyperlinks and menu for your document
-\usepackage[breaklinks,hyperindex,colorlinks,anchorcolor=black,citecolor=black,filecolor=black,linkcolor=black,menucolor=black,urlcolor=black,pdftex]{hyperref} % pagebackref: Add page number to the references where they can be found
-\addto\extrasenglish{ % Capitalize Refs, Write "Listing 1" instead of just "1"
-  \def\chapterautorefname{Chapter}
-  \def\sectionautorefname{Section}
-  \def\subsectionautorefname{Subsection}
-  \def\subsubsectionautorefname{Subsubsection}
-  \def\paragraphautorefname{Paragraph}
-  \def\subparagraphautorefname{Subparagraph}
-  \def\listingautorefname{Listing}
+% IMPORTANT: Never ever disable hyperref package. It will help your supervisor by providing clickable references and table of contents
+\usepackage[breaklinks,hyperindex,colorlinks,anchorcolor=black,citecolor=black,filecolor=black,linkcolor=black,menucolor=black,urlcolor=black,bookmarks=true,bookmarksopen=true,bookmarksnumbered=true,]{hyperref} % pagebackref: Add page number to the references where they can be found
+\addto\extrasenglish{% Capitalize Refs, Write "Listing 1" instead of just "1"
+  \def\chapterautorefname{Chapter}%
+  \def\sectionautorefname{Section}%
+  \def\subsectionautorefname{Subsection}%
+  \def\subsubsectionautorefname{Subsubsection}%
+  \def\paragraphautorefname{Paragraph}%
+  \def\subparagraphautorefname{Subparagraph}%
+  \def\listingautorefname{Listing}%
 }
 % DO NOT LOAD ANY OF YOUR PACKAGES BEYOND THIS PACKAGE
 
@@ -111,19 +121,23 @@
    pdftitle = {\@title},
    pdfauthor = {\@author},
    pdfsubject={\@title},
-   pdfkeywords={OpenID Connect, add more}, % CHANGE HERE
+   pdfkeywords={\keywords},
  }
 }
+\makeatother
 
+% Acronyms and glossary entries, expanded on first use (no printed list)
+\usepackage{glossaries}
+\glsdisablehyper % Most people do not like clickable acronyms and glossary entries.
+\input{glossary/glossary}
 
-%Customizing GanttChart
-\definecolor{barblue}{RGB}{153,204,254}
-\definecolor{groupblue}{RGB}{51,102,254}
+% Gantt chart style
+\colorlet{barblue}{rubblue!30}
+\colorlet{groupblue}{rubblue}
 \definecolor{linkred}{RGB}{165,0,33}
 \setganttlinklabel{s-s}{START-TO-START}
 \setganttlinklabel{f-s}{FINISH-TO-START}
 \setganttlinklabel{f-f}{FINISH-TO-FINISH}
-\sffamily
 \ganttset
 {%
 	y unit chart=0.6cm,

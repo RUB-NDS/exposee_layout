@@ -1,0 +1,64 @@
+%% name of the thesis type
+\ifdefstring{\thesistype}{bachelor}{\def\thesisname{Bachelor's Thesis}}{}
+\ifdefstring{\thesistype}{master}{\def\thesisname{Master's Thesis}}{}
+\ifdefstring{\thesistype}{seminar}{\def\thesisname{Seminar Thesis}}{}
+
+%% roman page numbers for the front matter
+\pagenumbering{roman}
+
+%% title page
+\titlehead{\includegraphics[height=2.4cm]{images/fcs_logo.png}\hfill\includegraphics[height=2.4cm]{images/rub_cube.pdf}}
+\publishers{%
+  Ruhr University Bochum\\
+  Faculty of Computer Science\\
+  Chair for Network and Data Security
+
+  \textit{Exposé for a \thesisname}
+
+  \begingroup
+    \large
+    \setlength{\tabcolsep}{.5ex}
+    \vspace{1cm}
+    \begin{tabular}{@{}rl@{}}
+      \ifdefempty{\firstexaminer}{}{First Examiner: & \firstexaminer\\}
+      \ifdefempty{\secondexaminer}{}{Second Examiner: & \secondexaminer\\}
+      \ifdefempty{\advisor}{}{Advisor: & \advisor\\}
+      \ifdefempty{\secondadvisor}{}{Second Advisor: & \secondadvisor\\}
+    \end{tabular}
+  \endgroup
+
+  \vspace{-2cm}
+}
+\maketitle
+
+%% abstract
+\input{chapters/abstract}
+
+\cleardoublepage
+
+\pagestyle{scrplain} % switch off headers and footers
+
+% Official declaration form of the faculty, text fields rebuilt (positions in bp)
+\begin{Form}
+\renewcommand{\DefaultOptionsofText}{print,bordercolor=,backgroundcolor=,charsize=9pt}
+\includepdf[picturecommand={%
+  \setlength{\unitlength}{1bp}%
+  \put(57,682){\TextField[name=title,multiline,width=482bp,height=50bp]{}}%
+  \put(57,127){\TextField[name=aitools,multiline,width=482bp,height=152bp,charsize=8pt]{}}%
+  \put(62,78){\TextField[name=date,width=76bp,height=22bp]{}}%
+  \put(169,78){\TextField[name=name,width=175bp,height=22bp]{}}%
+}]{forms/declaration.pdf}
+\end{Form}
+
+\cleardoublepage
+
+\pagestyle{scrheadings} % reenable headers and footers
+
+%% generate table of contents
+\tableofcontents
+
+\cleardoublepage
+
+%% arabic page numbers for the rest of the text
+\pagenumbering{arabic}
+\setcounter{page}{1}
